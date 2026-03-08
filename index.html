@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Bill Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero-card">
+      <p class="eyebrow">Invoice Helper</p>
+      <h1>GST Bill Generator</h1>
+      <p class="intro">
+        Add multiple products using their after-tax values. The tool will create a line-item GST
+        breakdown and a consolidated total for the full bill.
+      </p>
+
+      <form class="bill-form" id="bill-form">
+        <div class="toolbar-row">
+          <label class="field">
+            <span>Tax Mode</span>
+            <select id="tax-mode" name="taxMode">
+              <option value="split">CGST 9% + SGST 9%</option>
+              <option value="igst">IGST 18%</option>
+            </select>
+          </label>
+          <button type="button" class="secondary-btn" id="add-item-btn">Add Product</button>
+        </div>
+
+        <div class="items-panel">
+          <div class="items-head">
+            <div>Product</div>
+            <div>Amount (Incl. Tax)</div>
+            <div>Action</div>
+          </div>
+          <div id="line-items" class="line-items"></div>
+        </div>
+
+        <button type="submit" class="primary-btn">Generate Bill Breakdown</button>
+      </form>
+    </section>
+
+    <section class="results-card" aria-live="polite">
+      <div class="results-header">
+        <p class="eyebrow">Calculated Breakdown</p>
+        <h2>Line item summary</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table class="bill-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Taxable Value</th>
+              <th id="column-tax-one">CGST</th>
+              <th id="column-tax-two">SGST</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="results-body">
+            <tr>
+              <td colspan="5" class="empty-state">Add products and generate the bill to see the breakdown.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="result-grid">
+        <article class="result-box accent">
+          <span class="label">Taxable Value</span>
+          <strong id="base-amount">Rs 0.00</strong>
+        </article>
+        <article class="result-box">
+          <span class="label">Total Tax</span>
+          <strong id="tax-amount">Rs 0.00</strong>
+        </article>
+        <article class="result-box">
+          <span class="label" id="tax-label-one">CGST (9%)</span>
+          <strong id="tax-part-one">Rs 0.00</strong>
+        </article>
+        <article class="result-box">
+          <span class="label" id="tax-label-two">SGST (9%)</span>
+          <strong id="tax-part-two">Rs 0.00</strong>
+        </article>
+      </div>
+
+      <div class="summary-strip">
+        <span>Total Bill</span>
+        <strong id="final-amount">Rs 0.00</strong>
+      </div>
+
+      <p class="note">
+        Each product is treated as an after-tax amount. Formula used per line item: taxable value = total / 1.18
+      </p>
+    </section>
+  </main>
+
+  <template id="line-item-template">
+    <div class="line-item">
+      <label class="field compact-field">
+        <span class="sr-only">Product name</span>
+        <input type="text" class="item-name" placeholder="Product name" maxlength="80">
+      </label>
+      <label class="field compact-field">
+        <span class="sr-only">Amount including tax</span>
+        <input type="number" class="item-total" min="0" step="0.01" placeholder="0.00">
+      </label>
+      <button type="button" class="remove-btn">Remove</button>
+    </div>
+  </template>
+
+  <script src="./script.js"></script>
+</body>
+</html>
